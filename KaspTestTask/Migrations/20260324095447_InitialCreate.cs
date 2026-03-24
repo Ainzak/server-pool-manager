@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace KaspTestTask.Migrations
 {
-    /    public partial class InitialCreate : Migration
+    public partial class InitialCreate : Migration
     {
-        /        protected override void Up(MigrationBuilder migrationBuilder)
+        protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
                 name: "Servers",
@@ -29,7 +29,7 @@ namespace KaspTestTask.Migrations
                 });
         }
 
-        /        protected override void Down(MigrationBuilder migrationBuilder)
+        protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "Servers");

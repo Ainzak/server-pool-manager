@@ -21,16 +21,16 @@ public class SearchServerTests : IDisposable
     {
         _connection = new SqliteConnection("DataSource=:memory:");
         _connection.Open();
-        
+
         var options = new DbContextOptionsBuilder<AppDbContext>()
             .UseSqlite(_connection)
             .Options;
 
         _context = new AppDbContext(options);
         _context.Database.EnsureCreated();
-        
+
         SeedTestData();
-        
+
         var logger = Mock.Of<ILogger<ServersController>>();
         _controller = new ServersController(_context, logger);
     }
@@ -101,8 +101,8 @@ public class SearchServerTests : IDisposable
     [Fact]
     public async Task SearchServers_WithMultipleFilters_ReturnsMatchingServers()
     {
-        var searchDto = new SearchServerDto 
-        { 
+        var searchDto = new SearchServerDto
+        {
             Status = ServerStatus.Available,
             MinRamMb = 4096,
             MinCpuCores = 2

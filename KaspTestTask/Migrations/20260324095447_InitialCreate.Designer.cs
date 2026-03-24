@@ -13,7 +13,7 @@ namespace KaspTestTask.Migrations
     [Migration("20260324095447_InitialCreate")]
     partial class InitialCreate
     {
-        /        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.0");

@@ -26,9 +26,9 @@ namespace KaspTestTask.Services
                     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
                     var now = DateTime.UtcNow;
 
-                                        var bootingServers = await db.Servers
-                        .Where(s => s.Status == ServerStatus.Booting && s.ReadyAt != null && s.ReadyAt <= now)
-                        .ToListAsync(stoppingToken);
+                    var bootingServers = await db.Servers
+    .Where(s => s.Status == ServerStatus.Booting && s.ReadyAt != null && s.ReadyAt <= now)
+    .ToListAsync(stoppingToken);
 
                     foreach (var server in bootingServers)
                     {
@@ -38,9 +38,9 @@ namespace KaspTestTask.Services
                         server.ReadyAt = null;
                     }
 
-                                        var expiredReservations = await db.Servers
-                        .Where(s => s.Status == ServerStatus.Reserved && s.ReservedUntil != null && s.ReservedUntil <= now)
-                        .ToListAsync(stoppingToken);
+                    var expiredReservations = await db.Servers
+    .Where(s => s.Status == ServerStatus.Reserved && s.ReservedUntil != null && s.ReservedUntil <= now)
+    .ToListAsync(stoppingToken);
 
                     foreach (var server in expiredReservations)
                     {
@@ -60,14 +60,16 @@ namespace KaspTestTask.Services
                             try
                             {
                                 await db.SaveChangesAsync(stoppingToken);
-                                break;                             }
+                                break;
+                            }
                             catch (DbUpdateConcurrencyException ex)
                             {
                                 _logger.LogWarning($"Concurrency conflict during background status update (attempt {attempt}): {ex.Message}");
                                 if (attempt >= maxAttempts)
                                 {
                                     _logger.LogError("Failed to update server statuses after retries.");
-                                    break;                                 }
+                                    break;
+                                }
                                 var delayMs = 50 * (int)Math.Pow(2, attempt);
                                 await Task.Delay(delayMs, stoppingToken);
                             }

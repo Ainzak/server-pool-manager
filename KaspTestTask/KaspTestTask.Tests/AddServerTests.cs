@@ -21,14 +21,14 @@ public class AddServerTests : IDisposable
     {
         _connection = new SqliteConnection("DataSource=:memory:");
         _connection.Open();
-        
+
         var options = new DbContextOptionsBuilder<AppDbContext>()
             .UseSqlite(_connection)
             .Options;
 
         _context = new AppDbContext(options);
         _context.Database.EnsureCreated();
-        
+
         var logger = Mock.Of<ILogger<ServersController>>();
         _controller = new ServersController(_context, logger);
     }
@@ -36,19 +36,19 @@ public class AddServerTests : IDisposable
     [Fact]
     public async Task AddServer_WithValidData_CreatesDisabledServer()
     {
-        var dto = new CreateServerDto 
-        { 
-            OperatingSystem = "Ubuntu 22.04", 
-            RamMb = 4096, 
-            DiskGb = 100, 
-            CpuCores = 4 
+        var dto = new CreateServerDto
+        {
+            OperatingSystem = "Ubuntu 22.04",
+            RamMb = 4096,
+            DiskGb = 100,
+            CpuCores = 4
         };
 
         var result = await _controller.AddServer(dto);
-        
+
         var createdAtResult = Assert.IsType<CreatedAtActionResult>(result.Result);
         var server = Assert.IsType<ServerDto>(createdAtResult.Value);
-        
+
         Assert.Equal("Ubuntu 22.04", server.OperatingSystem);
         Assert.Equal(4096, server.RamMb);
         Assert.Equal(100, server.DiskGb);
@@ -61,16 +61,16 @@ public class AddServerTests : IDisposable
     [Fact]
     public async Task AddServer_WithMinimalValues_CreatesServer()
     {
-        var dto = new CreateServerDto 
-        { 
-            OperatingSystem = "Debian", 
-            RamMb = 1, 
-            DiskGb = 1, 
-            CpuCores = 1 
+        var dto = new CreateServerDto
+        {
+            OperatingSystem = "Debian",
+            RamMb = 1,
+            DiskGb = 1,
+            CpuCores = 1
         };
 
         var result = await _controller.AddServer(dto);
-        
+
         Assert.NotNull(result.Result);
         var createdAtResult = Assert.IsType<CreatedAtActionResult>(result.Result);
         var server = Assert.IsType<ServerDto>(createdAtResult.Value);
@@ -95,7 +95,7 @@ public class AddServerTests : IDisposable
             var createdAtResult = Assert.IsType<CreatedAtActionResult>(result.Result);
             results.Add(Assert.IsType<ServerDto>(createdAtResult.Value));
         }
-        
+
         Assert.Equal(3, results.Count);
         var ids = results.Select(s => s.Id).ToList();
         Assert.Equal(3, ids.Distinct().Count());
