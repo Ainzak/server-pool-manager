@@ -52,27 +52,13 @@ namespace KaspTestTask.Services
 
                     if (bootingServers.Any() || expiredReservations.Any())
                     {
-                        const int maxAttempts = 3;
-                        int attempt = 0;
-                        while (true)
+                        try
                         {
-                            attempt++;
-                            try
-                            {
-                                await db.SaveChangesAsync(stoppingToken);
-                                break;
-                            }
-                            catch (DbUpdateConcurrencyException ex)
-                            {
-                                _logger.LogWarning($"Concurrency conflict during background status update (attempt {attempt}): {ex.Message}");
-                                if (attempt >= maxAttempts)
-                                {
-                                    _logger.LogError("Failed to update server statuses after retries.");
-                                    break;
-                                }
-                                var delayMs = 50 * (int)Math.Pow(2, attempt);
-                                await Task.Delay(delayMs, stoppingToken);
-                            }
+                            await db.SaveChangesAsync(stoppingToken);
+                        }
+                        catch (DbUpdateConcurrencyException ex)
+                        {
+                            _logger.LogWarning($"Concurrency conflict during background status update: {ex.Message}");
                         }
                     }
                 }

@@ -16,8 +16,7 @@ namespace KaspTestTask.Data
         {
             modelBuilder.Entity<Server>()
                 .Property(s => s.RowVersion)
-                .IsRowVersion()
-                .IsConcurrencyToken();
+                .IsRowVersion();
         }
     }
 }

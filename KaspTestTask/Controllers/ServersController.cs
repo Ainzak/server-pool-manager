@@ -121,7 +121,6 @@ namespace KaspTestTask.Controllers
                     }
                     var delayMs = 50 * (int)Math.Pow(2, attempt);
                     await Task.Delay(delayMs);
-                    continue;
                 }
             }
         }
@@ -163,7 +162,6 @@ namespace KaspTestTask.Controllers
                     }
                     var delayMs = 50 * (int)Math.Pow(2, attempt);
                     await Task.Delay(delayMs);
-                    continue;
                 }
             }
         }
